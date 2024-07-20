@@ -26,6 +26,12 @@ const questions = [
         question: "Which of these languages is considered a markup language?",
         answer: ["HTML", "JavaScript", "C++", "PHP"],
         correct: "ans0"
+    },
+    //Question 4
+    {
+        question: "2 + 2 is...",
+        answer: ["2", "4", "0", "22"],
+        correct: "ans1"
     }
 ]
 
@@ -85,15 +91,20 @@ function generateQuestion(maxQuestions) {
             return generateQuestion(maxQuestions);
         } else {
             console.log('No more question!');
+            $('#quiz').addClass('ocult');
+            $('#message').html('Congratulations you won!');
+            $('#status').removeClass('ocult');
         }
     }
 }
 
 $('.answer').click(function () {
-    resetButtons();
+    if ($('#quiz').attr('index-date') !== 'locked') {
+        resetButtons();
 
-    //Added the class "selected"
-    $(this).addClass('selected');
+        //Added the class "selected"
+        $(this).addClass('selected');
+    };
 });
 
 $('#confirm').click(function () {
@@ -113,11 +124,15 @@ $('#confirm').click(function () {
                 nextQuestion();
             } else {
                 //alert('You wrong :c');
+                $('#quiz').attr('index-date', 'locked');
+                $('#confirm').addClass('ocult');
                 $('#' + answerCorrect).addClass('correct');
                 $('#' + answerSelected).removeClass('selected')
                 $('#' + answerSelected).addClass('wrong');
+
+                //4 seconds to game over
                 setTimeout(function () {
-                    newGame();
+                    gameOver();
                 }, 4000);
             }
         }
@@ -126,9 +141,13 @@ $('#confirm').click(function () {
 });
 
 function newGame() {
+    $('#confirm').addClass('ocult');
+    $('#quiz').attr('index-date', 'ok');
     resetButtons();
     questionAsked = [];
     generateQuestion(qtQuestion);
+    $('#quiz').removeClass('ocult');
+    $('#status').addClass('ocult');
 }
 
 function nextQuestion() {
@@ -142,5 +161,21 @@ function resetButtons() {
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }
+        if ($(this).hasClass('correct')) {
+            $(this).removeClass('correct');
+        }
+        if ($(this).hasClass('wrong')) {
+            $(this).removeClass('wrong');
+        }
     });
 }
+
+function gameOver() {
+    $('#quiz').addClass('ocult');
+    $('#message').html('Game Over!');
+    $('#status').removeClass('ocult');
+}
+
+$('#tryAgain').click(function () {
+    newGame();
+})

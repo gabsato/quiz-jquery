@@ -69,3 +69,19 @@ button {
         background: seagreen;
     }
 }
+
+#status {
+    padding: 10%;
+}
+
+#tryAgain {
+    background: black;
+    color: white;
+    margin: auto auto;
+    border: none;
+    cursor: pointer;
+}
+
+.ocult {
+    display: none;
+}
